@@ -20,6 +20,8 @@ namespace NguyenThaoNguyen_BTH2.Controllers
         }
 
         // GET: Employee
+        // 
+        // 
         public async Task<IActionResult> Index()
         {
               return _context.Employee != null ? 

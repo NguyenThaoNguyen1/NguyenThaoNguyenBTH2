@@ -28,6 +28,7 @@ namespace NguyenThaoNguyen_BTH2.Controllers
         }
 
         // GET: Person/Details/5
+        // 
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Person == null)

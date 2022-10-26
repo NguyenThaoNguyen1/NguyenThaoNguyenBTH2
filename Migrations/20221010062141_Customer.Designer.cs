@@ -13,6 +13,7 @@ namespace NguyenThaoNguyen_BTH2.Migrations
     [Migration("20221010062141_Customer")]
     partial class Customer
     {
+        // 
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

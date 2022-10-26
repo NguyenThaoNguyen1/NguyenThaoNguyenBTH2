@@ -24,7 +24,7 @@ namespace NguyenThaoNguyen_BTH2.Migrations
                     table.PrimaryKey("PK_Customer", x => x.Id);
                 });
         }
-
+// 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

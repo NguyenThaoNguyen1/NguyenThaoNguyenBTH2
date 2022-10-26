@@ -13,6 +13,8 @@ namespace NguyenThaoNguyen_BTH2.Migrations
     [Migration("20221010061657_Student")]
     partial class Student
     {
+        // 
+        // 
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
