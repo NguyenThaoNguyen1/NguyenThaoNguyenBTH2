@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NguyenThaoNguyen_BTH2.Models
 {
+//tạo class  Customer
     public class Customer
     {
         public int Id { get; set; }
