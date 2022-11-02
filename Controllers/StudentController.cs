@@ -34,7 +34,7 @@ namespace NguyenThaoNguyen_BTH2.Controllers
             {
                 return NotFound();
             }
-
+            //tìm dữ liệu trong database theo id
             var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (student == null)
@@ -60,8 +60,11 @@ namespace NguyenThaoNguyen_BTH2.Controllers
         {
             if (ModelState.IsValid)
             {
+                //add vào data
                 _context.Add(student);
+                //lưu thay đổi vào db
                 await _context.SaveChangesAsync();
+                //sau khi lưu thau đổi, điều hương về trang index
                 return RedirectToAction(nameof(Index));
             }
             return View(student);
@@ -93,6 +96,7 @@ namespace NguyenThaoNguyen_BTH2.Controllers
         {
             if (id != student.Id)
             {
+                //return NotFound()
                 return NotFound();
             }
 
@@ -100,7 +104,9 @@ namespace NguyenThaoNguyen_BTH2.Controllers
             {
                 try
                 {
+                    //update dữ liệu thay đổi vào applicationDb
                     _context.Update(student);
+                    //lư thay đổi
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

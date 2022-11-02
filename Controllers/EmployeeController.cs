@@ -1,3 +1,4 @@
+using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NguyenThaoNguyen_BTH2.Data;
 using NguyenThaoNguyen_BTH2.Models;
+using NguyenThaoNguyen_BTH2.Models.Process;
+using NguyenThaoNguyen_BTH2.Models;
 
 namespace NguyenThaoNguyen_BTH2.Controllers
 {
     public class EmployeeController : Controller
     {
+        //Khai báo ApplicationDbContext
         private readonly ApplicationDbContext _context;
+        private ExcelProcess _excelProcess =new ExcelProcess();
 
         public EmployeeController(ApplicationDbContext context)
         {
@@ -21,7 +26,7 @@ namespace NguyenThaoNguyen_BTH2.Controllers
 
         // GET: Employee
         // 
-        // 
+        // Xây dựng action trả về danh sách employee 
         public async Task<IActionResult> Index()
         {
               return _context.Employee != null ? 
@@ -160,6 +165,50 @@ namespace NguyenThaoNguyen_BTH2.Controllers
         private bool EmployeeExists(int id)
         {
           return (_context.Employee?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        ////////////
+        public async Task<IActionResult> Upload()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            if(file!=null)
+            {
+                string fileExtension =Path.GetExtension(file.FileName);
+                if (fileExtension != ".xls" && fileExtension != "xlsx")
+                {
+                    ModelState.AddModelError("","Please choose excel file to upload!");
+                }
+                else{
+                    var FileName = DateTime.Now.ToShortDateString() + fileExtension;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory()+ "/Uploads/Excels", FileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        //save file to sever
+                        await file.CopyToAsync(stream);
+                        var dt = _excelProcess.ExcelToDataTable(fileLocation);
+                        for (int i=0; i < dt.Rows.Count; i++)
+                        {
+                            var emp = new Employee();
+
+                            emp.Id=dt.Rows[i][0].ToString();
+                            emp.MaNV=dt.Rows[i][1].ToString();
+                            emp.MaPhongBan=dt.Rows[i][3].ToString();
+                            emp.TenNv=dt.Rows[i][3].ToString();
+                            emp.diachi=dt.Rows[i][4].ToString();
+                            //
+                            _context.Employee.Add(emp);
+                        }
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            return View();
         }
     }
 }

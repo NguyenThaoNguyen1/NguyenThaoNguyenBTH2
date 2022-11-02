@@ -9,8 +9,7 @@ namespace NguyenThaoNguyen_BTH2.Data
         {
 
         }
-        // 
-        // 
+   
         public DbSet<Student> Students {get; set;}
         public DbSet<NguyenThaoNguyen_BTH2.Models.Customer>? Customer { get; set; }
         public DbSet<NguyenThaoNguyen_BTH2.Models.Employee>? Employee { get; set; }
